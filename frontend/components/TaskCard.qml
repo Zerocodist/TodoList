@@ -3,8 +3,14 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Rectangle {
-    width: ListView.view.width
+
+    id: root
+
+    property bool editing: false
+
+    width: ListView.view ? ListView.view.width : 0
     height: 60
+
     radius: 12
 
     color: "#2c2c2c"
@@ -13,61 +19,26 @@ Rectangle {
         anchors.fill: parent
         anchors.margins: 15
 
-        CheckBox {
-            id: cb
-            Layout.alignment: Qt.AlignVCenter
+        spacing: 10
 
-            checked: model.completed
-
-            indicator: Rectangle {
-                height: 25
-                width: 20
-                radius: 4
-
-                color: cb.checked ? "#4CAF50" : "#444444"
-
-                border.width: 1
-                border.color: "#888888"
-
-                Behavior on color {
-                    ColorAnimation {duration: 200}
-                }
-
-                Text {
-                    anchors.centerIn: parent
-                    text: cb.checked ? "✓" : ""
-                    color: "white"
-                }
-            }
-
-            onCheckedChanged: {
-                ListModelCpp.updateModel(model.id, cb.checked)
-            }
+        CustomCheckbox
+        {
+            id: customCheckbox
         }
 
-
-    Item {
-        id: root
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-
-        property bool editing: false
-
         Label {
-            anchors.fill: parent
-
             visible: !root.editing
 
             text: model.title
 
             color: "white"
+
+            font.weight: Font.DemiBold
             font.bold: true
-            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize: 24
+
             width: parent.width
             height: contentHeight
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-
 
             MouseArea {
                 anchors.fill: parent
@@ -76,7 +47,6 @@ Rectangle {
         }
 
         TextField {
-            anchors.verticalCenter: parent.verticalCenter
             width: parent.width
             height: 36
             visible: root.editing
@@ -85,17 +55,21 @@ Rectangle {
             opacity: visible ? 1 : 0
 
             Behavior on opacity {
-                NumberAnimation { duration: 200; easing.type: Easing.InOutQuad }
+                NumberAnimation
+                {
+                    duration: 200
+                    easing.type: Easing.InOutQuad
+                }
             }
 
             onAccepted: {
-                ListModelCpp.updateTitle(model.id, text)
+                AppController.updateTitle(model.id, text)
                 root.editing = false
             }
 
             onActiveFocusChanged: {
                 if(!activeFocus && root.editing) {
-                    ListModelCpp.updateTitle(model.id, text)
+                    AppController.updateTitle(model.id, text)
                     root.editing = false
                 }
             }
@@ -104,12 +78,13 @@ Rectangle {
                 root.editing = false
             }
         }
-    }
-        Button {
-            text: "Delete"
+
+        ActionButton {
+            buttonText: "Delete"
             implicitHeight: 36
-            Layout.alignment: Qt.AlignCenter
-            onClicked: ListModelCpp.deleteTask(model.id)
+            Layout.alignment: Qt.AlignRight
+            onClicked: AppController.deleteTask(model.id)
         }
     }
 }
+

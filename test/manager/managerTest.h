@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtTest>
-#include "managers/taskmanager.h"
+#include "manager/taskmanager.h"
 #include "database/database.h"
 #include "model/listModel.h"
 

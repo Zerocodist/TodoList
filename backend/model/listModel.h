@@ -3,36 +3,49 @@
 #include <QAbstractListModel>
 #include <QVector>
 #include <QString>
-#include "../managers/taskmanager.h"
-#include "../database/database.h"
-#include "../task/task.h"
+#include "task/task.h"
 
-class ListModelCpp : public QAbstractListModel {
+class ListModelCpp : public QAbstractListModel
+{
     Q_OBJECT
+
 public:
-    explicit ListModelCpp(Database &db, QObject *parent = nullptr);
+    explicit ListModelCpp(QObject *parent = nullptr);
 
     enum TaskRoles  {
         IdRole = Qt::UserRole + 1,
         TitleRole,
         CompletedRole
     };
+
     Q_ENUM(TaskRoles);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+
     QVariant data(const QModelIndex &index, int role) const override;
+
     QHash<int, QByteArray> roleNames() const override;
-    Q_INVOKABLE bool addTask(const QString &title);
-    Q_INVOKABLE bool deleteTask(int id);
-    Q_INVOKABLE bool loadTask();
-    Q_INVOKABLE bool updateTitle(int id, const QString &title);
-    Q_INVOKABLE bool updateModel(int id, bool completed);
-    Q_INVOKABLE bool clearAll();
-private:
-    QVector<Task> tasks;
-    QVector<Task> visibleTask;
-    Database &database;
-    TaskManager task;
+
 signals:
-    void status(const QString &text);
+    void operationStatus(const QString &text);
+
+public slots:
+    void addTask(const Task &task);
+
+    void setTasks(const QVector<Task> &tasks);
+
+    void deleteTask(int id);
+
+    void updateTitle(int id, const QString &title);
+
+    void updateStatus(int id, bool completed);
+
+    void clearAll();
+
+private:
+    QVector<Task> m_tasks;
+
+    QHash<int, int> m_rowById;
+
+    void rebuildIndex();
 };

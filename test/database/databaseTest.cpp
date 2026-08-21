@@ -2,7 +2,7 @@
 
 void DatabaseTest::init()
 {
-    db = new Database(true);
+    db = new Database(DatabaseMode::Test);
 }
 
 void DatabaseTest::cleanup()

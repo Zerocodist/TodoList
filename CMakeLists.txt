@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(TodoList VERSION 0.1 LANGUAGES CXX)
+project(TodoList VERSION 0.2 LANGUAGES CXX)
+
+option(BUILD_TESTS "Build tests" OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -8,84 +10,120 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 REQUIRED COMPONENTS
     Quick
     QuickControls2
-    Test
     Sql
+    ShaderTools
 )
 
-qt_standard_project_setup(REQUIRES 6.10)
+qt_standard_project_setup(REQUIRES 6.11)
 
 qt_add_library(TodoListCore STATIC
     backend/database/database.cpp
     backend/database/database.h
-    backend/managers/taskmanager.cpp
-    backend/managers/taskmanager.h
+    backend/manager/taskManager.cpp
+    backend/manager/taskManager.h
     backend/model/listModel.h
     backend/model/listModel.cpp
     backend/task/task.h
     backend/proxyModel/proxyModel.h
     backend/proxyModel/proxyModel.cpp
+    backend/controller/appController.h
+    backend/controller/appController.cpp
+    backend/worker/taskWorker.h
+    backend/worker/taskWorker.cpp
+    backend/task/operationStatus.h
+    backend/database/databaseMode.h
 )
 
 target_link_libraries(TodoListCore
     PUBLIC
-        Qt6::Core
-        Qt6::Sql
-
-    )
+    Qt6::Core
+    Qt6::Sql
+)
 
 target_include_directories(TodoListCore PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/backend
 )
 
 qt_add_executable(TodoListApp
-    main.cpp
+    frontend/main.cpp
 )
 
+qt6_add_shaders(TodoListApp "my_liqui_shader"
+    PREFIX
+    "local_shader"
+    BASE
+    "frontend/shaders"
+    FILES
+    "frontend/shaders/LiquiGradient.frag"
+
+
+
+)
 qt_add_qml_module(TodoListApp
     URI TodoList
     QML_FILES
-        frontend/Main.qml
-        frontend/pages/HomePage.qml
-        frontend/components/CustomButton.qml
-        frontend/components/TaskCard.qml
-        frontend/components/TaskInput.qml
-        frontend/components/Toast.qml
-)
-
-target_include_directories(TodoListApp PRIVATE
-   ${CMAKE_CURRENT_SOURCE_DIR}/backend
-   ${CMAKE_CURRENT_SOURCE_DIR}/backend/managers
-   ${CMAKE_CURRENT_SOURCE_DIR}/backend/database
-   ${CMAKE_CURRENT_SOURCE_DIR}/backend/model
-   ${CMAKE_CURRENT_SOURCE_DIR}/backend/proxyModel
+    frontend/Main.qml
+    frontend/screens/MainScreen.qml
+    frontend/components/ActionButton.qml
+    frontend/components/TaskCard.qml
+    frontend/components/TaskInput.qml
+    frontend/components/AnimatedBackground.qml
+    frontend/screens/SplashScreen.qml
+    frontend/components/CustomCheckbox.qml
+    frontend/components/TaskList.qml
+    frontend/components/Notification.qml
+    frontend/components/Notification.qml
+    QML_FILES frontend/components/SearchField.qml
+    QML_FILES frontend/components/PaginationPanel.qml
 )
 
 target_link_libraries(TodoListApp
     PRIVATE
-        TodoListCore
-        Qt6::Quick
-        Qt6::QuickControls2
-        Qt6::Test
-        Qt6::Sql
+    TodoListCore
+    Qt6::Quick
+    Qt6::QuickControls2
 )
 
-qt_add_executable(TodoListTests
-    test/database/databaseTest.cpp
-    test/database/databaseTest.h
-    test/manager/managerTest.cpp
-    test/manager/managerTest.h
-    test/listModel/listModelTest.cpp
-    test/listModel/listModelTest.h
-    test/proxyModel/proxyModelTest.cpp
-    test/proxyModel/proxyModelTest.h
-    test/main.cpp
+target_sources(TodoListApp PRIVATE
+   frontend/image/logo.icns
 )
 
-target_link_libraries(TodoListTests
-    PRIVATE
+set_source_files_properties(
+    frontend/image/logo.icns
+    PROPERTIES
+    MACOSX_PACKAGE_LOCATION "Resources"
+)
+
+if(BUILD_TESTS)
+
+    enable_testing()
+
+    qt_add_executable(TodoListTests
+        test/main.cpp
+        test/database/databaseTest.cpp
+        test/database/databaseTest.h
+        test/manager/managerTest.cpp
+        test/manager/managerTest.h
+        test/listModel/listModelTest.cpp
+        test/listModel/listModelTest.h
+        test/proxyModel/proxyModelTest.cpp
+        test/proxyModel/proxyModelTest.h
+    )
+
+    target_link_libraries(TodoListTests
+        PRIVATE
         TodoListCore
         Qt6::Test
-)
+    )
+
+    add_test(NAME TodoListTests COMMAND TodoListTests)
+
+
+    set_target_properties(TodoListTests PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests
+    )
+
+endif()
 
 set_target_properties(TodoListApp PROPERTIES
 
@@ -94,6 +132,7 @@ set_target_properties(TodoListApp PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
+
 
 install(TARGETS TodoListApp
     BUNDLE DESTINATION .

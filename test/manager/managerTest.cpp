@@ -3,7 +3,7 @@
 
     void TaskManagerTest::init()
     {
-        db = new Database(true);
+        db = new Database(DatabaseMode::Test);
         tm = new TaskManager(*db);
         qDebug() << QSqlDatabase::connectionNames();
     }
