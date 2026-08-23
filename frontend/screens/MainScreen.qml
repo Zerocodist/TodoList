@@ -50,6 +50,15 @@ Item {
                         }
                 }
 
+                TaskScroll
+                {
+                        id: taskScroll
+
+                        Layout.alignment: Qt.AlignHCenter
+                        Layout.preferredHeight: 30
+                        Layout.preferredWidth: 30
+                }
+
                 Row
                 {
                         spacing: 10
@@ -81,7 +90,26 @@ Item {
                                 buttonWidth: 150
                                 buttonHeight: 60
 
-                                onClicked: AppController.loadLogs()
+                                onClicked:
+                                {
+                                        if(pagination.checkedState)
+                                        {
+                                                if(paginationPanel.limitField.trim() === "")
+                                                {
+                                                        return
+                                                }
+
+                                                AppController.loadTasksByPage(
+                                                                        Number(paginationPanel.offsetField),
+                                                                        Number(paginationPanel.limitField)
+                                                )
+                                        }
+
+                                        else
+                                        {
+                                                AppController.loadTasks()
+                                        }
+                                }
                         }
 
                         PaginationPanel
@@ -127,6 +155,7 @@ Item {
                                                 onCheckedStateChanged:
                                                 {
                                                         paginationPanel.showIf(checkedState)
+                                                        taskScroll.showIf(checkedState)
                                                 }
                                         }
                                 }

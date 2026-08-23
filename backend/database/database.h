@@ -21,6 +21,8 @@ public:
 
     QSqlDatabase connection() const;
 
+    int totalTasksCount();
+
     ~Database();
 
 private:
@@ -43,6 +45,11 @@ public slots:
 
     bool clearAll();
 
-    QVector<Task> loadLogs();
+    QVector<Task> loadTasks();
+
+    QVector<Task> loadTasksByPage(int offset, int limit);
+
+signals:
+    void pagesCount(int count);
 };
 

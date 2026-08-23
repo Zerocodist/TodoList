@@ -28,9 +28,15 @@ public slots:
 
     OperationStatus clearDatabase();
 
-    QVector<Task> loadLogs();
+    QVector<Task> loadTasks();
+
+    QVector<Task> loadTasksByPage(int offset, int limit);
+
+    int totalTasksCount();
 
 signals:
     void tasksLoaded(const QVector<Task> &task);
+
+    void tasksCount(int count);
 
 };

@@ -194,7 +194,7 @@ Database::~Database()
 }
 
 
-QVector<Task> Database::loadLogs()
+QVector<Task> Database::loadTasks()
 {
     QVector<Task> results;
 
@@ -225,4 +225,62 @@ QVector<Task> Database::loadLogs()
     }
 
     return results;
+}
+
+
+QVector<Task> Database::loadTasksByPage(int offset, int limit)
+{
+    QVector<Task> results;
+
+    QSqlQuery query(db);
+
+    query.prepare(
+                  "SELECT id, title, completed "
+                  "FROM tasks "
+                  "ORDER BY id ASC "
+                  "LIMIT :limit "
+                  "OFFSET :offset"
+    );
+
+    query.bindValue(":offset", offset);
+    query.bindValue(":limit", limit);
+
+    if(!query.exec())
+    {
+        qDebug() << "Error can't load tasks by page: " << query.lastError().text();
+
+        return {};
+    }
+
+    while(query.next())
+    {
+        Task tasks;
+
+        tasks.id = query.value(0).toInt();
+        tasks.title = query.value(1).toString();
+        tasks.completed = query.value(2).toBool();
+
+        results.append(tasks);
+    }
+
+    return results;
+}
+
+
+int Database::totalTasksCount()
+{
+    QSqlQuery query(db);
+
+    if(!query.exec("SELECT COUNT(*) FROM tasks"))
+    {
+        qDebug() << "Error can't count tasks: " << query.lastError().text();
+
+        return -1;
+    }
+
+    if(!query.next())
+        return -1;
+
+
+    return query.value(0).toInt();
 }

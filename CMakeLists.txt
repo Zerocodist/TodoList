@@ -72,9 +72,9 @@ qt_add_qml_module(TodoListApp
     frontend/components/CustomCheckbox.qml
     frontend/components/TaskList.qml
     frontend/components/Notification.qml
-    frontend/components/Notification.qml
-    QML_FILES frontend/components/SearchField.qml
-    QML_FILES frontend/components/PaginationPanel.qml
+    frontend/components/SearchField.qml
+    frontend/components/PaginationPanel.qml
+    frontend/components/TaskScroll.qml
 )
 
 target_link_libraries(TodoListApp

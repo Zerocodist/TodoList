@@ -6,6 +6,10 @@ Rectangle {
 
     id: root
 
+    focus: false
+
+    activeFocusOnTab: false
+
     property bool editing: false
 
     width: ListView.view ? ListView.view.width : 0
@@ -14,6 +18,13 @@ Rectangle {
     radius: 12
 
     color: "#2c2c2c"
+
+    MouseArea
+    {
+        anchors.fill: parent
+        enabled: root.editing
+        onClicked: root.forceActiveFocus()
+    }
 
     RowLayout {
         anchors.fill: parent
@@ -49,10 +60,23 @@ Rectangle {
         TextField {
             width: parent.width
             height: 36
+
             visible: root.editing
+
             text: model.title
+
             focus: root.editing
+
             opacity: visible ? 1 : 0
+
+            color: "#D5D8E0"
+
+            background: Rectangle
+            {
+                radius: 8
+
+                color: "black"
+            }
 
             Behavior on opacity {
                 NumberAnimation

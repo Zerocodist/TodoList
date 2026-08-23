@@ -71,9 +71,9 @@ OperationStatus TaskManager::clearDatabase()
 }
 
 
-QVector<Task> TaskManager::loadLogs()
+QVector<Task> TaskManager::loadTasks()
 {
-    QVector<Task> results = database->loadLogs();
+    QVector<Task> results = database->loadTasks();
 
     if(results.isEmpty())
     {
@@ -83,4 +83,34 @@ QVector<Task> TaskManager::loadLogs()
     }
 
     return results;
+}
+
+
+QVector<Task> TaskManager::loadTasksByPage(int offset, int limit)
+{
+    QVector<Task> results;
+
+    if(offset < 0 || limit <= 0)
+    {
+        qDebug() << "You input incorrect parameters";
+
+        return {};
+    }
+
+    results = database->loadTasksByPage(offset, limit );
+
+    if(results.isEmpty())
+    {
+        qDebug() << "Database return empty tasks";
+
+        return {};
+    }
+
+    return results;
+}
+
+
+int TaskManager::totalTasksCount()
+{
+    return database->totalTasksCount();
 }

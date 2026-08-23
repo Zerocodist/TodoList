@@ -10,11 +10,15 @@ Item {
     property int paginationWidth: 250
     property int paginationHeight: 55
 
+    property int offsetFieldWidth: 50
+    property int offsetFieldHeight: 35
+
     property int limitFieldWidth: 50
     property int limitFieldHeight: 35
 
-    property int offsetFieldWidth: 50
-    property int offsetFieldHeight: 35
+    property alias offsetField: offset.text
+    property alias limitField: limit.text
+
 
     function showIf(value)
     {
@@ -79,6 +83,8 @@ Item {
 
             TextField
             {
+                id: offset
+
                 width: offsetFieldWidth
                 height: offsetFieldHeight
 
@@ -110,6 +116,8 @@ Item {
 
             TextField
             {
+                id:limit
+
                 width: limitFieldWidth
                 height: limitFieldHeight
 

@@ -10,7 +10,8 @@ enum class OperationType
     UpdateStatus,
     UpdateTitle,
     ClearDatabase,
-    LoadLogs
+    LoadLogs,
+    TotalTasksCount
 };
 
 struct OperationStatus

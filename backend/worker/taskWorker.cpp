@@ -82,7 +82,32 @@ void TaskWorker::clearDatabase()
 
 void TaskWorker::loadTasks()
 {
-    QVector<Task> tasks = manager->loadLogs();
+    QVector<Task> tasks = manager->loadTasks();
 
     emit tasksLoaded(tasks);
+}
+
+
+void TaskWorker::loadTasksByPage(int offset, int limit)
+{
+
+    QVector<Task> results = manager->loadTasksByPage(offset, limit);
+
+    emit tasksLoadedByPage(results);
+}
+
+
+void TaskWorker::totalTasksCount()
+{
+    const int result = manager->totalTasksCount();
+
+    OperationStatus status =
+        OperationStatus::fail(OperationType::TotalTasksCount, -1, "Can't count tasks!");
+
+    if(result == -1)
+    {
+        emit operationStatus(status);
+    }
+
+    emit tasksCount(result);
 }

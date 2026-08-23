@@ -30,6 +30,10 @@ public slots:
 
     void loadTasks();
 
+    void loadTasksByPage(int offset, int limit);
+
+    void totalTasksCount();
+
 private:
     TaskManager *manager = nullptr;
 
@@ -45,6 +49,10 @@ signals:
     void databaseCleared();
 
     void tasksLoaded(const QVector<Task> &tasks);
+
+    void tasksLoadedByPage(const QVector<Task> &tasks);
+
+    void tasksCount(int count);
 
     void operationStatus(OperationStatus status);
 };
