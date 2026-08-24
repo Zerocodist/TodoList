@@ -7,7 +7,6 @@
 ![C++](https://img.shields.io/badge/C++-17-blue)
 ![SQLite](https://img.shields.io/badge/SQLite-3-lightgrey)
 
-# Todo List
 Todo List is a desktop application with **Qt6 / C++17**
 for creating, managing your task.
 ---
