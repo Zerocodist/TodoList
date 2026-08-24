@@ -32,6 +32,11 @@ for creating, managing your task.
 - Qt test
 ---
 
+## Screenshots
+<p>
+  <img src="assets/screenshots/Screen.png" width="500">
+</p>
+
 ## Build
 ```bash
 git clone https://github.com/Zerocodist/TodoList.git
