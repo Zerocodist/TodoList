@@ -12,6 +12,8 @@ Item
 
     property int buttonHeight: 70
 
+    property int buttonRadius: 18
+
     property string buttonText: "export"
 
     property bool pressed: mouseArea.pressed
@@ -32,7 +34,7 @@ Item
                  ? "#30343E"
                  : "#2A2D35"
 
-        opacity: hovered ? 1.0 : 0.9
+        opacity: root.hovered ? 1.0 : 0.9
 
         scale: root.pressed ? 0.95 : root.hovered ? 1.03 : 1.0
 
@@ -42,7 +44,7 @@ Item
 
         border.width: 1
 
-        radius: 18
+        radius: buttonRadius
 
         Behavior on color
         {

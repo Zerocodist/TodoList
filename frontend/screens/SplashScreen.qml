@@ -35,6 +35,12 @@ Item {
 
     property int buttonEndMargin: 620
 
+    property int footerDelay: 900
+
+    property int footerStartMargin: 700
+
+    property int footerEndMargin: 720
+
     AnimatedBackground
     {
         id: splashBackground
@@ -216,53 +222,94 @@ Item {
     }
 
 
-    RowLayout
+    Label
     {
-        anchors.bottom: parent.bottom
+        id: footer
+
+        text: "Developed by -> @zerocodist"
+
+        anchors.top: parent.top
+        anchors.topMargin: root.footerEndMargin
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottomMargin: 30
 
-        Label
+        opacity: 0
+
+        color: mouse.containsMouse ? "#FFFFFF" : "#AAAAAA"
+        scale: mouse.containsMouse ? 1.05 : 1.0
+
+        Behavior on color
         {
-            text: "Developed by -> @zerocodist"
-
-            color: mouse.containsMouse ? "#FFFFFF" : "#AAAAAA"
-            scale: mouse.containsMouse ? 1.05 : 1.0
-
-            Behavior on color
+            ColorAnimation
             {
-                ColorAnimation
-                {
-                    duration: 180
-                }
-            }
-
-            Behavior on scale
-            {
-                NumberAnimation
-                {
-                    duration: 180
-                }
-            }
-
-            MouseArea
-            {
-                id: mouse
-
-                anchors.fill: parent
-
-                cursorShape: Qt.PointingHandCursor
-
-                hoverEnabled: true
-
-                onClicked:
-                {
-                    Qt.openUrlExternally(
-                               Qt.url("https://t.me/zerocodist")
-                    )
-                }
+                duration: 180
             }
         }
 
+        Behavior on scale
+        {
+            NumberAnimation
+            {
+                duration: 180
+            }
+        }
+
+        MouseArea
+        {
+            id: mouse
+
+            anchors.fill: parent
+
+            cursorShape: Qt.PointingHandCursor
+
+            hoverEnabled: true
+
+            onClicked:
+            {
+                Qt.openUrlExternally(
+                            Qt.url("https://t.me/zerocodist")
+                            )
+            }
+        }
     }
+
+    SequentialAnimation
+    {
+        running: true
+
+        PauseAnimation
+        {
+            duration: root.footerDelay
+        }
+
+        ParallelAnimation
+        {
+            NumberAnimation
+            {
+                target: footer
+                property: "opacity"
+
+                from: 0
+                to: 1
+
+                duration: root.footerDelay
+
+                easing.type: Easing.OutCubic
+            }
+
+            NumberAnimation
+            {
+                target: footer
+                property: "anchors.topMargin"
+
+                from: root.footerStartMargin
+                to: root.footerEndMargin
+
+                duration: root.fadeDuration
+
+                easing.type: Easing.OutCubic
+            }
+        }
+    }
+
 }
+

@@ -75,6 +75,10 @@ qt_add_qml_module(TodoListApp
     frontend/components/SearchField.qml
     frontend/components/PaginationPanel.qml
     frontend/components/TaskScroll.qml
+    frontend/components/CustomDrawer.qml
+    QML_FILES frontend/components/InfoPopup.qml
+    QML_FILES frontend/components/ConfirmPopup.qml
+    QML_FILES frontend/components/ExitPopup.qml
 )
 
 target_link_libraries(TodoListApp

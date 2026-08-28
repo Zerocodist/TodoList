@@ -28,7 +28,8 @@ ApplicationWindow
 
         close.accepted = false
 
-        if(typeof stack.currentItem.showExitPopup === "function")
+        if(stack.currentItem &&
+                typeof stack.currentItem.showExitPopup === "function")
         {
             stack.currentItem.showExitPopup()
         }

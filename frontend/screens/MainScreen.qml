@@ -4,6 +4,16 @@ import QtQuick.Layouts
 import TodoList
 
 Item {
+        id: main
+
+        signal exitAccepted()
+
+
+
+        function showExitPopup()
+        {
+                exitPopup.showPopup()
+        }
 
         AnimatedBackground
         {
@@ -19,6 +29,7 @@ Item {
                 anchors.bottomMargin: 20
 
                 spacing: 20
+
 
                 TaskInput {
                         id: input
@@ -80,7 +91,10 @@ Item {
                                 buttonWidth: 150
                                 buttonHeight: 60
 
-                                onClicked: AppController.clearDatabase()
+                                onClicked:
+                                {
+                                        confirmPopup.showPopup()
+                                }
                         }
 
                         ActionButton
@@ -163,6 +177,17 @@ Item {
                 }
         }
 
+        CustomDrawer
+        {
+                id: drawer
+
+                anchors.left: parent.left
+                anchors.top: parent.top
+
+                anchors.topMargin: 10
+                anchors.leftMargin: 10
+        }
+
         Notification
         {
                 id: notification
@@ -174,4 +199,18 @@ Item {
                 anchors.topMargin: 30
         }
 
+        ConfirmPopup
+        {
+                id: confirmPopup
+        }
+
+        ExitPopup
+        {
+                id: exitPopup
+
+                onExitSuccess:
+                {
+                        main.exitAccepted()
+                }
+        }
 }
