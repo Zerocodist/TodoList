@@ -4,7 +4,7 @@ for creating, managing your task.
 ---
 
 <p align="center">
-<img src="frontend/image/screen.png" width="200">
+<img src="frontend/image/Screen.png" width="200">
 </p>
 
 ![Qt](https://img.shields.io/badge/Qt-6.11-brightgreen)
