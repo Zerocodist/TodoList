@@ -59,7 +59,7 @@ This directory contains project rests.
 Currently, testing functionality is under development and will be expanded in future updates.
 
 Planned:
-- Unit test for log parsers
+- Unit test for add task, and other fucntions
 - Database tests
 - Model and controller tests
 - Integration testing
