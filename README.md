@@ -36,13 +36,11 @@ for creating, managing your task.
 <p>
   <img src="assets/screenshots/Screen.png" width="500">
 </p>
----
 
 ## Gif
 <p>
   <img src="asset/gif/demo.gif" width="500">
 </p>
----
 
 ## Build
 ```bash
