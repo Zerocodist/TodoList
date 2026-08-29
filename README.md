@@ -42,6 +42,7 @@ for creating, managing your task.
 <p>
   <img src="asset/gif/demo.gif" width="500">
 </p>
+---
 
 ## Build
 ```bash
