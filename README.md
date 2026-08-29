@@ -39,7 +39,7 @@ for creating, managing your task.
 
 ## Gif
 <p>
-  <img src="asset/gif/demo.gif" width="500">
+  <img src="assets/gif/demo.gif" width="500">
 </p>
 
 ## Build
